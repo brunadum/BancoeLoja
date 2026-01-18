@@ -135,7 +135,12 @@ public class LojaVarejo {
                 compraPendente = true;
                 status = StatusLojaTipo.PENDENTE;
                 motivoStatus = "Sem caixa para pagar fornecedor. Vender produtos para entrar dinheiro e finalizar.";
-                throw new IllegalStateException("Caixa insuficiente. Compra pendente criada.");
+
+                throw new IllegalStateException(
+                        "Caixa insuficiente para pagar a nota.\n" +
+                                "Compra marcada como PENDENTE.\n" +
+                                String.format("Total da nota: R$ %.2f | Caixa atual: R$ %.2f", totalNota, caixa)
+                );
             }
             caixa -= totalNota;
         }
