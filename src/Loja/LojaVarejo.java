@@ -84,11 +84,11 @@ public class LojaVarejo {
 
         compraFornecedorPendente = null;
         compraPendente = false;
-        if (status == StatusLojaTipo.PENDENTE) {
-            status = StatusLojaTipo.ATIVA;
-            motivoStatus = null;
-        }
+
+        status = StatusLojaTipo.ATIVA;
+        motivoStatus = null;
     }
+
 
     public List<Venda> getHistoricoVendas() {
         return historicoVendas;
