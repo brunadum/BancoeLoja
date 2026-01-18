@@ -53,7 +53,36 @@ public class LojaVarejo {
     }
 
     public void finalizarCompraPendente() {
-        if (!compraPendente) throw new IllegalStateException("Não existe compra pendente.");
+        if (!compraPendente || compraFornecedorPendente == null) {
+            throw new IllegalStateException("Não existe compra pendente para finalizar.");
+        }
+
+        double total = compraFornecedorPendente.totalCompra();
+
+        if (caixa < total) {
+            throw new IllegalStateException(
+                    "Ainda não há caixa suficiente para finalizar.\n" +
+                            String.format("Total pendente: R$ %.2f | Caixa atual: R$ %.2f", total, caixa)
+            );
+        }
+
+        caixa -= total;
+
+        for (ItemCompraFornecedor i : compraFornecedorPendente.getItens()) {
+            Produto p = buscarProduto(i.getCodigo());
+            double precoVenda = i.getValorCompraUnit() * 1.30;
+
+            if (p == null) {
+                p = new Produto(i.getCodigo(), i.getNome(), precoVenda, 0);
+                produtos.add(p);
+            } else {
+                p.setPrecoVenda(precoVenda);
+            }
+
+            p.adicionarEstoque(i.getQtd());
+        }
+
+        compraFornecedorPendente = null;
         compraPendente = false;
         if (status == StatusLojaTipo.PENDENTE) {
             status = StatusLojaTipo.ATIVA;
