@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Banco {
     private ArrayList<ContaBancaria> contas = new ArrayList<>();
-    private int proximoNumero = 3095;
+    private int proximoNumero = 2045;
 
     public ContaBancaria criarConta(String nome, String cpf, String email, String endereco, int senha) {
         Cliente cliente = new Cliente(nome, cpf, email, endereco, senha);
