@@ -19,6 +19,9 @@ public class LojaVarejo {
     private StatusLojaTipo status = StatusLojaTipo.ATIVA;
     private String motivoStatus = null;
 
+    private CompraFornecedor compraFornecedorPendente = null;
+
+
     private double caixa = 0.0;
 
     private ContaBancaria contaLoja;
@@ -157,10 +160,12 @@ public class LojaVarejo {
         if (status == StatusLojaTipo.INATIVA) throw new IllegalStateException("Loja INATIVA: " + motivoStatus);
 
         double totalNota = compra.totalCompra();
+
         boolean primeiraNota = produtos.isEmpty() && historicoVendas.isEmpty() && caixa == 0.0;
 
         if (!primeiraNota) {
             if (caixa < totalNota) {
+                compraFornecedorPendente = compra;
                 compraPendente = true;
                 status = StatusLojaTipo.PENDENTE;
                 motivoStatus = "Sem caixa para pagar fornecedor. Vender produtos para entrar dinheiro e finalizar.";
@@ -171,6 +176,7 @@ public class LojaVarejo {
                                 String.format("Total da nota: R$ %.2f | Caixa atual: R$ %.2f", totalNota, caixa)
                 );
             }
+
             caixa -= totalNota;
         }
 
@@ -184,7 +190,15 @@ public class LojaVarejo {
             } else {
                 p.setPrecoVenda(precoVenda);
             }
+
             p.adicionarEstoque(i.getQtd());
+        }
+
+        compraFornecedorPendente = null;
+        compraPendente = false;
+        if (status == StatusLojaTipo.PENDENTE) {
+            status = StatusLojaTipo.ATIVA;
+            motivoStatus = null;
         }
     }
 
@@ -225,10 +239,6 @@ public class LojaVarejo {
         } else {
             operacoesComCaixaZerado = 0;
         }
-    }
-
-    private int itemCodigo(ItemVenda item) {
-        return -1;
     }
 
 }
