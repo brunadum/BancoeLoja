@@ -402,8 +402,9 @@ public class SistemaLoja {
 
             venda.adicionarItem(p, qtd);
 
-            int r = JOptionPane.showConfirmDialog(null, "Adicionar mais itens?", "Carrinho", JOptionPane.YES_NO_OPTION);
-            if (r != JOptionPane.YES_OPTION) break;
+            if (!confirmarSimNao("Adicionar mais itens?", "Carrinho")) {
+                break;
+            }
         }
 
         if (venda.getTotal() <= 0) {
