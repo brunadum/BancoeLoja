@@ -470,4 +470,20 @@ public class SistemaLoja {
             return null;
         }
     }
+
+    private static boolean confirmarSimNao(String mensagem, String titulo) {
+        String[] opcoes = {"SIM", "NÃO"};
+        int r = JOptionPane.showOptionDialog(
+                null,
+                mensagem,
+                titulo,
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcoes,
+                opcoes[0]
+        );
+        return r == 0; // 0 = SIM | 1 ou -1 = NÃO/fechou
+    }
+
 }
