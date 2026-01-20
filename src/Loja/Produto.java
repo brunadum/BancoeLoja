@@ -1,9 +1,9 @@
 package Loja;
 
 public class Produto {
-    private int codigo;          // 4 dígitos
+    private int codigo;
     private String nome;
-    private double precoVenda;   // preço de venda
+    private double precoVenda;
     private int estoque;
 
     public Produto(int codigo, String nome, double precoVenda, int estoque) {

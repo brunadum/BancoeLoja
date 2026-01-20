@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 public class SistemaPrincipal {
     public static void main(String[] args) {
-        Banco bancoCompartilhado = new Banco(); // o mesmo banco para Banco + Loja
+        Banco bancoCompartilhado = new Banco();
 
         while (true) {
             String op = JOptionPane.showInputDialog(

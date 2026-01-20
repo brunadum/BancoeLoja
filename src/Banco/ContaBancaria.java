@@ -81,7 +81,7 @@ public class ContaBancaria {
     public void transferir(ContaBancaria destino, double valor) {
         validarAtiva();
         if (destino == null) throw new IllegalArgumentException("Conta destino inválida.");
-        if (!destino.isAtiva()) throw new IllegalStateException("Conta destino INATIVA.");
+        if (!destino.isAtiva()) throw new IllegalStateException("Conta destino inativa.");
         if (valor <= 0) throw new IllegalArgumentException("Valor inválido.");
 
         if (valor > this.saldo) {

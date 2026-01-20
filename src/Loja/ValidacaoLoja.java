@@ -23,7 +23,6 @@ public class ValidacaoLoja {
     }
 
     public static boolean telefoneValido(String tel) {
-        // com DDD: 10 (fixo) ou 11 (celular)
         return tel != null && (tel.length() == 10 || tel.length() == 11) && soDigitos(tel);
     }
 

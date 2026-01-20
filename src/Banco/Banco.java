@@ -26,7 +26,6 @@ public class Banco {
         return null;
     }
 
-    // ✅ NOVO: usado pela Loja para verificar se existe pelo menos uma conta ativa
     public boolean existeAlgumaContaAtiva() {
         for (ContaBancaria c : contas) {
             if (c.isAtiva()) return true;

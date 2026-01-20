@@ -9,21 +9,14 @@ import java.util.List;
 
 public class SistemaLoja {
 
-    // Uma loja “global” para o sistema (fica viva enquanto o programa roda)
     private static final LojaVarejo loja = new LojaVarejo();
 
-    // Entrada do módulo Loja (será chamada pelo SistemaPrincipal)
     public static void executar(Banco banco) {
 
-        // Se ainda não cadastrou a loja, força cadastro antes de operar
         if (!loja.isCadastrada()) {
-            int r = JOptionPane.showConfirmDialog(
-                    null,
-                    "Loja ainda não cadastrada.\nDeseja cadastrar agora?",
-                    "Cadastro da Loja",
-                    JOptionPane.YES_NO_OPTION
-            );
-            if (r != JOptionPane.YES_OPTION) return;
+            if (!confirmarSimNao("Loja ainda não cadastrada.\nDeseja cadastrar agora?", "Cadastro da Loja")) {
+                return;
+            }
 
             cadastrarLoja(banco);
             if (!loja.isCadastrada()) return; // se cancelou no meio
@@ -63,8 +56,6 @@ public class SistemaLoja {
         }
     }
 
-    // ---------------- CADASTRO DA LOJA ----------------
-
     private static void cadastrarLoja(Banco banco) {
         if (!banco.existeAlgumaContaAtiva()) {
             JOptionPane.showMessageDialog(
@@ -77,7 +68,7 @@ public class SistemaLoja {
             );
             return;
         }
-        
+
         String nome = inputObrigatorio("Nome da loja:");
         if (nome == null) return;
 
@@ -130,7 +121,6 @@ public class SistemaLoja {
 
         ContatoLoja contato = new ContatoLoja(telefone, email);
 
-        // Vincular conta bancária da loja (tem que existir e estar ativa)
         Integer numContaLoja = lerInt("Número da conta bancária da loja (precisa existir e estar ativa):");
         if (numContaLoja == null) return;
 
@@ -165,8 +155,6 @@ public class SistemaLoja {
             default: return CategoriaLoja.OUTROS;
         }
     }
-
-    // ---------------- MENU ADMIN ----------------
 
     private static void menuAdmin(Banco banco) {
         while (true) {
@@ -248,7 +236,6 @@ public class SistemaLoja {
     }
 
     private static void adminCompraFornecedor(Banco banco) {
-        // regra: loja bloqueada não opera
         loja.validarOperacaoPermitida();
 
         String nota = inputObrigatorio("Número da nota fiscal do fornecedor:");
@@ -256,9 +243,8 @@ public class SistemaLoja {
 
         CompraFornecedor compra = new CompraFornecedor(nota);
 
-        // loop para adicionar itens na nota
         while (true) {
-            String sCod = JOptionPane.showInputDialog("Código do produto (4 dígitos) ou cancelar para terminar a nota:");
+            String sCod = JOptionPane.showInputDialog("Código do produto (4 dígitos) ou Cancelar para terminar a nota:");
             if (sCod == null) break;
 
             int cod = Integer.parseInt(sCod);
@@ -275,8 +261,9 @@ public class SistemaLoja {
 
             compra.adicionarItem(new ItemCompraFornecedor(cod, nome, qtd, valorCompra));
 
-            int r = JOptionPane.showConfirmDialog(null, "Adicionar mais itens nessa nota?", "Fornecedor", JOptionPane.YES_NO_OPTION);
-            if (r != JOptionPane.YES_OPTION) break;
+            if (!confirmarSimNao("Adicionar mais itens nessa nota?", "Fornecedor")) {
+                break;
+            }
         }
 
         if (compra.getItens().isEmpty()) {
@@ -333,15 +320,12 @@ public class SistemaLoja {
         JOptionPane.showMessageDialog(null, "Status atualizado: " + loja.getStatusFormatado());
     }
 
-    // ---------------- MENU CLIENTE ----------------
-
     private static void menuCliente(Banco banco) {
-        loja.validarOperacaoPermitida(); // bloqueada não vende
+        loja.validarOperacaoPermitida();
 
         Integer contaCliente = lerInt("Informe o número da sua conta bancária (obrigatório):");
         if (contaCliente == null) return;
 
-        // valida conta existe e está ativa
         ContaBancaria conta = banco.buscarContaAtiva(contaCliente);
         if (conta == null) {
             JOptionPane.showMessageDialog(null, "Conta inexistente ou INATIVA. Compra bloqueada.");
@@ -424,24 +408,16 @@ public class SistemaLoja {
             return;
         }
 
-        int confirma = JOptionPane.showConfirmDialog(null,
-                venda.resumo() + "\n\nConfirmar compra?",
-                "Confirmação",
-                JOptionPane.YES_NO_OPTION);
-
-        if (confirma != JOptionPane.YES_OPTION) {
+        if (!confirmarSimNao(venda.resumo() + "\n\nConfirmar compra?", "Confirmação")) {
             JOptionPane.showMessageDialog(null, "Compra cancelada.");
             return;
         }
 
-        // baixa estoque + integra com banco (debita cliente e credita loja)
         loja.realizarVenda(banco, venda);
 
         JOptionPane.showMessageDialog(null,
                 "Compra realizada!\n" + String.format("Total: R$ %.2f", venda.getTotal()));
     }
-
-    // ---------------- Helpers ----------------
 
     private static int pedirCodigoProduto() {
         Integer cod = lerInt("Código do produto (4 dígitos):");
@@ -496,7 +472,7 @@ public class SistemaLoja {
                 opcoes,
                 opcoes[0]
         );
-        return r == 0; // 0 = SIM | 1 ou -1 = NÃO/fechou
+        return r == 0;
     }
-
 }
+

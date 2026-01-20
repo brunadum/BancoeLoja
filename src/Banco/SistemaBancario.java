@@ -68,7 +68,7 @@ public class SistemaBancario {
 
         ContaBancaria conta = banco.buscarContaAtiva(numero);
         if (conta == null) {
-            JOptionPane.showMessageDialog(null, "Conta não encontrada ou INATIVA.");
+            JOptionPane.showMessageDialog(null, "Conta não encontrada ou inativa.");
             return;
         }
 
@@ -82,7 +82,7 @@ public class SistemaBancario {
 
         while (true) {
             String op = JOptionPane.showInputDialog(
-                    "CONTA " + conta.getNumero() + " - " + conta.getTitular().getNome() + "\n\n" +
+                    "Conta " + conta.getNumero() + " - " + conta.getTitular().getNome() + "\n\n" +
                             "1 - Depositar\n" +
                             "2 - Sacar\n" +
                             "3 - Transferir\n" +
@@ -119,7 +119,7 @@ public class SistemaBancario {
 
                         ContaBancaria contaDestino = banco.buscarContaAtiva(destino);
                         if (contaDestino == null) {
-                            JOptionPane.showMessageDialog(null, "Conta destino não encontrada ou INATIVA.");
+                            JOptionPane.showMessageDialog(null, "Conta destino não encontrada ou inativa.");
                             break;
                         }
 

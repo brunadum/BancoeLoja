@@ -240,6 +240,5 @@ public class LojaVarejo {
             operacoesComCaixaZerado = 0;
         }
     }
-
 }
 

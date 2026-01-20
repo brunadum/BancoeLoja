@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter;
 
 public class Lancamento {
     private final LocalDateTime dataHora;
-    private final String tipo;      // "DEPÓSITO", "SAQUE", "TRANSFERÊNCIA", etc.
-    private final String descricao; // texto livre
-    private final double valor;     // pode ser + ou -
+    private final String tipo;
+    private final String descricao;
+    private final double valor;
 
     public Lancamento(String tipo, String descricao, double valor) {
         this.dataHora = LocalDateTime.now();
