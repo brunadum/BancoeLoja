@@ -66,6 +66,18 @@ public class SistemaLoja {
     // ---------------- CADASTRO DA LOJA ----------------
 
     private static void cadastrarLoja(Banco banco) {
+        if (!banco.existeAlgumaContaAtiva()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Nenhuma conta ativa cadastrada.\n\n" +
+                            "Crie uma conta no módulo BANCO primeiro (e mantenha-a ativa)\n" +
+                            "para então vincular a conta bancária da loja.",
+                    "Cadastro da Loja",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+        
         String nome = inputObrigatorio("Nome da loja:");
         if (nome == null) return;
 
